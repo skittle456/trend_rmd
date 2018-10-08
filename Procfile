@@ -1,1 +1,1 @@
-web: gunicorn clog.wsgi; python manage.py collectstatic --noinput
+web: gunicorn clog.wsgi;
