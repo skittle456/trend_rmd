@@ -1,1 +1,1 @@
-web: gunicorn clog.wsgi;
+web: gunicorn trend_rmd.wsgi;

@@ -23,6 +23,17 @@ STATIC_DIR = os.path.join(BASE_DIR,"static")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ax0%e=vk2*projwxzi6p5hod1=@vtgcrq(u^csr%a7el1x88)#'
 
+#twitter
+SOCIAL_AUTH_TWITTER_KEY = 'FZxbUNJZoRWlwBBSBMaZS7AfI'
+SOCIAL_AUTH_TWITTER_SECRET = 'm2TS5kqAheGtYiqYyT522AZppetFIPaQVmk1DwqAIpxFifUV9v'
+TWITTER_ACCESS_TOKEN = '895689175223095296-lS956TCRC7FpadMili3tkb5tJbC1wJm'
+TWITTER_ACCESS_TOKEN_SECRET = '0EiMeh2Xcqbl6NBzitD1LKAHHdYehevaSbECJ1Tr4fBWd'
+
+#auth
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'home'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -38,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'apis'
 ]
 
@@ -50,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'trend_rmd.urls'
@@ -66,23 +79,36 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect', # <--
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'trend_rmd.wsgi.application'
-
+AUTH_USER_MODEL = 'apis.User'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "d13jkmf4gmgk1q",
+        "USER": "evvjnihyzybuaf",
+        "PASSWORD": "4035f896eeb36dfd1cecc6196f981bafd6bec639bcc03b6198aa79a92363c444",
+        "HOST": "ec2-54-221-225-11.compute-1.amazonaws.com",
+        "PORT": "5432",
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.twitter.TwitterOAuth',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
 # Password validation
@@ -127,5 +153,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
-# MEDIA_URL = "/media/"
+MEDIA_URL = "/media/"
 # MEDIA_ROOT = os.path.join(BASE_DIR,"static/upload")
