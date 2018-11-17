@@ -94,13 +94,17 @@ AUTH_USER_MODEL = 'apis.User'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #     "NAME": "d7d0hapajdcirk",
+    #     "USER": "oybfqykvdiklic",
+    #     "PASSWORD": "1077488f22aa0e5827843769862e1964242a43dbe0773e3d4b046e6a32c3d81d",
+    #     "HOST": "ec2-50-19-249-121.compute-1.amazonaws.com",
+    #     "PORT": "5432",
+    # }
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "d13jkmf4gmgk1q",
-        "USER": "evvjnihyzybuaf",
-        "PASSWORD": "4035f896eeb36dfd1cecc6196f981bafd6bec639bcc03b6198aa79a92363c444",
-        "HOST": "ec2-54-221-225-11.compute-1.amazonaws.com",
-        "PORT": "5432",
+        'ENGINE': 'django.db.backends.sqlite3',
+        "NAME": "trendrmd",
     }
 }
 
