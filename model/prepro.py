@@ -8,7 +8,11 @@ import re
 from pythainlp.tokenize import word_tokenize
 from pythainlp.summarize import summarize_text
 from collections import Counter
-directory_in_str = "D:/thesis/trend_rmd/model"
+import random
+
+
+#directory_in_str = "D:/thesis/trend_rmd/model"
+directory_in_str = "F:/Workspace/Thesis/trend_rmd/model"
 directory = os.fsencode(directory_in_str)
 for file in os.listdir(directory):
     filename = os.fsdecode(file)
@@ -25,10 +29,26 @@ for file in os.listdir(directory):
         text=re.sub('[^A-Za-z0-9\u0E00-\u0E7F.\-]+','',fullText)
         result=word_tokenize(text,engine='newmm')
         if("1.docx"==filename):
-            print(result)
+            #print(result)
             counts = Counter(result)
-            print(counts)
-            print(len(counts))
+            most32 = counts.most_common(32)
+            m32=[]
+            for i in most32 : m32.append(i[0])
+            print("Most :",m32) #32 words most
+            for i in m32: del(counts[i])
+            print()
+
+            lowest16 = list(counts.most_common()[:-17:-1])
+            lw16 = []
+            for i in lowest16: lw16.append(i[0])
+            print("lowest :",lw16) #16 words lowerest
+            for i in lw16: del(counts[i]) 
+
+            print() 
+            random16 = random.choices(list(counts),k=16) #16 random words
+            rd16 =[]
+            for i in random16: rd16.append(i)
+            print("Random :",rd16)
 
 
 
