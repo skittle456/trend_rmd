@@ -11,3 +11,6 @@ social-auth-app-django
 oauth2
 wikipedia
 twitter
+pythainlp
+docx2txt
+python-docx
