@@ -24,14 +24,11 @@ import numpy as np
 DATA_PATH='../model/'
 MODEL_PATH = f'{DATA_PATH}word2vec/'
 
-#load into gensim
-model = KeyedVectors.load_word2vec_format(f'{MODEL_PATH}thai2vec.bin',binary=True)
-#create dataframe
-thai2dict = {}
-words = ["ไทย","ปักกิ่ง","กรุงเทพฯ","จีน"]
-arr = np.empty((0,400), int)
-print(arr)
-for word in words:
-        arr = np.append( arr, [model.wv.word_vec(word)],axis=0 )  
-
-print(arr)
+def t2v(words):
+        #load into gensim
+        model = KeyedVectors.load_word2vec_format(f'{MODEL_PATH}thai2vec.bin',binary=True)
+        #create dataframe
+        arr = np.empty((0,400), int)
+        for word in words:
+                arr = np.append( arr, [model.wv.word_vec(word)],axis=0 )  
+        return arr
