@@ -33,6 +33,7 @@ class Article(models.Model):
     text =  models.TextField()
     url = models.CharField(max_length=255)
     categories = models.ManyToManyField(Category)
+    tag = models.CharField(max_length=255, default=None, null=True)
     created_on = models.DateTimeField(auto_now_add=True) 
     def __str__(self):
         return "%s" %  (self.title)

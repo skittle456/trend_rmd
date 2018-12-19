@@ -48,6 +48,7 @@ class TrendList(object):
 class GetArticle(object):
 
     def __init__(self):
+        wikipedia.set_lang('th')
         pass
     
     def tokenize(self, content):
@@ -71,13 +72,31 @@ class GetArticle(object):
         content = ''.join(content)
         content = re.sub("[\=\(\[].*?[\)\=\]]", "", content)
         return content
-            
-    def core(self):
-        wikipedia.set_lang('th')
-        random_articles = wikipedia.random(pages=1024)
+
+    def randomize(self, pages=20000):
+        articles = wikipedia.random(pages=pages)
+        for i in articles:
+            if 'จังหวัด' in i or 'อำเภอ' in i or 'เขต' in i or 'ทางหลวง' in i:
+                articles.remove(i)
+        return articles
+    
+    def search_title(self, query, results=13000):
+        articles = wikipedia.search(query, results=results)
+        articles = articles[::-1]
+        for i in articles:
+            if 'จังหวัด' in i or 'อำเภอ' in i or 'เขต' in i or 'ทางหลวง' in i:
+                articles.remove(i)
+        return articles
+
+    def core(self, random_articles):
+        # random_articles = wikipedia.random(pages=1024)
         base = Article.objects.all().values_list('title', flat=True)
         count = 0
+        skip_count = 0
         for item in random_articles:
+            if item in base:
+                skip_count+=1
+                continue
             try:
                 article = wikipedia.page(item)
             except wikipedia.exceptions.DisambiguationError as e:
@@ -87,8 +106,11 @@ class GetArticle(object):
                     continue
             except Exception as e:
                 continue
+
             if article.title in base:
+                skip_count+=1
                 continue
+
             content = self.tokenize(article.content)
             obj = Article(title=article.title,
                             url=article.url,
@@ -99,6 +121,10 @@ class GetArticle(object):
             except Exception:
                 continue
             obj.save()
+            
+            main_category = Category.objects.get(name="อาหาร")
+            obj.categories.add(main_category)
+
             base_categories = Category.objects.all().values_list('name', flat=True)
             for category in categories:
                 category = category.replace('หมวดหมู่:', '')
@@ -112,13 +138,28 @@ class GetArticle(object):
             obj.save()
             count+=1
             print('success: '+str(count))
+        print('total: '+str(len(random_articles)))
+        print('skip: '+str(skip_count))
         return obj
+        
 
 # trend = TrendList()
 # trend.core()
 # a = GetArticle()
-# articles = a.core()
+# articles = a.search_title(query='สัตว์')
+# a.core(random_articles=articles)
+# from django.db import connections
 
+# def srd_db():
+#     c = connections['srd-view'].cursor()
+#     print('after cusor')
+#     c.execute("select * from apps.xxcon_lease;")
+#     print('after exe')
+#     row = c.fetchall()
+#     print('after fetch')
+#     print(row)
+#     return row
+# srd_db()
 @login_required
 def home(request):
     return render(request, 'home.html')

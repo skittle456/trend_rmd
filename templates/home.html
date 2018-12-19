@@ -2,4 +2,6 @@
 <html>
     <h2>Homepage</h2>
     <p>Hello {{ user.username }}!</p>
+
+    <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
 </html>

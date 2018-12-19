@@ -105,6 +105,14 @@ DATABASES = {
     "default": {
         'ENGINE': 'django.db.backends.sqlite3',
         "NAME": "trendrmd",
+    },
+    "srd-view": {
+        "ENGINE": "django.db.backends.oracle",
+        "NAME": "UAT",
+        "USER": "XXCON",
+        "PASSWORD": "XXCON",
+        "HOST": "192.168.0.53",
+        "PORT": "1530",
     }
 }
 
