@@ -72,9 +72,23 @@ class GetArticle(object):
         content = ''.join(content)
         content = re.sub("[\=\(\[].*?[\)\=\]]", "", content)
         return content
+    def merge(self):
+        count=0
+        articles = Article.objects.order_by('created_on')
+        for i in articles:
+            if i.tag is not None:
+                continue
 
+            for j in i.categories.all():
+                if j.name == 'ดาว' or j.name == 'ดาว' or 'ดาว' in j.name or 'ดาว' in j.name:
+                    count+=1
+                    print('success: '+str(count))
+                    i.tag = 'วิทยาศาสตร์'
+                    i.save()
+                    break
     def randomize(self, pages=20000):
         articles = wikipedia.random(pages=pages)
+        
         for i in articles:
             if 'จังหวัด' in i or 'อำเภอ' in i or 'เขต' in i or 'ทางหลวง' in i:
                 articles.remove(i)
@@ -145,7 +159,8 @@ class GetArticle(object):
 
 # trend = TrendList()
 # trend.core()
-# a = GetArticle()
+a = GetArticle()
+a.merge()
 # articles = a.search_title(query='สัตว์')
 # a.core(random_articles=articles)
 # from django.db import connections
