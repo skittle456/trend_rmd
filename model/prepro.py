@@ -16,8 +16,8 @@ import string
 
 MODEL_PATH='../model/'
 DATASET_PATH = f'{MODEL_PATH}article/'
-#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาพยนตร์","ภาษา","ศาสนา","สัตว์","อาหาร"]
-CATEGORIES = ["พืช"]
+CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาพยนตร์","ภาษา","ศาสนา","สัตว์","อาหาร","สถานที่"]
+#CATEGORIES = ["พืช"]
 training_data = []
 
 def create_training_data():
