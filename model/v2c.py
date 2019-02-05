@@ -21,6 +21,9 @@ from pythainlp.tokenize import word_tokenize
 from gensim.models import KeyedVectors
 import numpy as np
 
+from pythainlp.corpus import ttc
+from pythainlp.spell import spell
+
 DATA_PATH='../model/'
 MODEL_PATH = f'{DATA_PATH}word2vec/'
 
@@ -30,5 +33,7 @@ def t2v(words):
         #create dataframe
         arr = np.empty((0,400), int)
         for word in words:
+                if word not in model.wv.index2word:
+                        word = "รายงาน"
                 arr = np.append( arr, [model.wv.word_vec(word)],axis=0 )  
         return arr

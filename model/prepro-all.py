@@ -15,9 +15,9 @@ import pickle
 import string
 
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}article/'
-#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาพยนตร์","ภาษา","ศาสนา","สัตว์","อาหาร"]
-CATEGORIES = ["พืช"]
+DATASET_PATH = f'{MODEL_PATH}dataset2/'
+CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาพยนตร์","ภาษา","ศาสนา","สัตว์","อาหาร","สถานที่"]
+#CATEGORIES = ["พืช"]
 training_data = []
 
 def create_training_data():
@@ -27,9 +27,10 @@ def create_training_data():
     #directory_in_str = "D:/thesis/trend_rmd/model"
     #directory_in_str = "F:/Workspace/Thesis/trend_rmd/model"
     #directory = os.fsencode(DATASET_PATH)
+        checkpoint = open(path+"/cp.text",mode="w+")
+        all_counts = Counter()
         for file in os.listdir(path):
             filename = os.fsdecode(file)
-            checkpoint = open(path+"/cp.text",mode="w+")
             if filename.endswith(".txt"):
                 #text = docx2txt.process(directory_in_str+ filename)
                 #doc = docx.Document( filename)
@@ -54,6 +55,8 @@ def create_training_data():
                 #print(result)
                 
                 counts = Counter(result)
+                all_counts = counts + all_counts
+                '''
                 if(len(counts)>=64):
                     most32 = counts.most_common(32)
                     m32=[]
@@ -83,11 +86,18 @@ def create_training_data():
                     training_data.append([new_array, class_num])
 
                     print(training_data)
+                '''
                 text.close()
-            #here
-    
-create_training_data()
+        checkpoint.write(str(len(all_counts.most_common()))+"\n")
+        for i in all_counts.most_common():
+            txt , count = i
+            checkpoint.write(txt+" "+str(count)+"\n")
+        checkpoint.close()
+        all_counts.clear()
+        #here
 
+create_training_data()
+'''
 X=[]
 y=[]
 for features,label in training_data:
@@ -103,6 +113,6 @@ pickle_out.close()
 pickle_out = open("y_article.pickle","wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()
-
+'''
 
 
