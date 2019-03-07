@@ -21,17 +21,19 @@ from pythainlp.tokenize import word_tokenize
 from gensim.models import KeyedVectors
 import numpy as np
 
+from pythainlp.corpus import ttc
+from pythainlp.spell import spell
+
 DATA_PATH='../model/'
 MODEL_PATH = f'{DATA_PATH}word2vec/'
 
-#load into gensim
-model = KeyedVectors.load_word2vec_format(f'{MODEL_PATH}thai2vec.bin',binary=True)
-#create dataframe
-thai2dict = {}
-words = ["ไทย","ปักกิ่ง","กรุงเทพฯ","จีน"]
-arr = np.empty((0,400), int)
-print(arr)
-for word in words:
-        arr = np.append( arr, [model.wv.word_vec(word)],axis=0 )  
-
-print(arr)
+def t2v(words):
+        #load into gensim
+        model = KeyedVectors.load_word2vec_format(f'{MODEL_PATH}thai2vec.bin',binary=True)
+        #create dataframe
+        arr = np.empty((0,400), int)
+        for word in words:
+                if word not in model.wv.index2word:
+                        word = "รายงาน"
+                arr = np.append( arr, [model.wv.word_vec(word)],axis=0 )  
+        return arr
