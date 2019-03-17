@@ -29,6 +29,15 @@ class Trend(models.Model):
     def __str__(self):
         return "%s" %  (self.name)
     
+class GoogleTrend(models.Model):
+    trend_id = models.AutoField(max_length=10,primary_key=True)
+    title = models.CharField(max_length=255)
+    url = models.CharField(max_length=255,null=True,blank=True)
+    query = models.CharField(max_length=255,null=True,blank=True)
+    approx_traffic = models.CharField(max_length=255,null=True,blank=True)
+    content = models.TextField(null=True, blank=True)
+    published_on = models.DateTimeField(null=True)
+     
 class Article(models.Model):
     article_id = models.AutoField(max_length=10,primary_key=True)
     title = models.CharField(max_length=255)
