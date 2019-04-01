@@ -14,3 +14,4 @@ twitter
 pythainlp
 docx2txt
 python-docx
+wikipedia
