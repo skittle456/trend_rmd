@@ -15,8 +15,8 @@ import pickle
 import string
 
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset2/'
-CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาพยนตร์","ภาษา","ศาสนา","สัตว์","อาหาร","สถานที่"]
+DATASET_PATH = f'{MODEL_PATH}dataset5/'
+CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ภาพยนตร์"]
 #CATEGORIES = ["พืช"]
 training_data = []
 
@@ -88,7 +88,7 @@ def create_training_data():
                     print(training_data)
                 '''
                 text.close()
-        checkpoint.write(str(len(all_counts.most_common()))+"\n")
+        checkpoint.write(str(len(all_counts.most_common()))+" "+str(len(all_counts.most_common()))+"\n")
         for i in all_counts.most_common():
             txt , count = i
             checkpoint.write(txt+" "+str(count)+"\n")
