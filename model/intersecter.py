@@ -2,9 +2,10 @@
 from collections import Counter
 import os
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset5/'
-TESTSET_PATH = f'{MODEL_PATH}testset5/'
-CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ภาพยนตร์"]
+DATASET_PATH = f'{MODEL_PATH}dataset_thai_8/'
+TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
+#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
+CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
 intsect=[]
 
 def intersecter():
@@ -16,7 +17,7 @@ def intersecter():
             if(int(i.split()[1]) >=100):
                 words.append((i.split()[0])) 
 
-        if(category == "การเมือง"):
+        if(category == CATEGORIES[0]):
             intsect = words
         else:
             intsect = list(set(intsect).intersection(words))

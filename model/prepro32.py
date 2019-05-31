@@ -17,42 +17,49 @@ from intersecter import intersecter
 from words_filter import words_filter
 
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset5/'
-TESTSET_PATH = f'{MODEL_PATH}testset5/'
-CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ภาพยนตร์"]
-#CATEGORIES = ["พืช"]
-training_data = []
+DATASET_PATH = f'{MODEL_PATH}dataset_thai_8/'
+TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
+#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
+CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
 
+MODE = "TEST"
 def create_training_data():
+    
     count_fail = [0]*10
     cate=0
     intersecter()
     for category in CATEGORIES:
-        ##for DATASET
-        #path = os.path.join(DATASET_PATH,category)
-        ##for TESTSET
-        path = os.path.join(TESTSET_PATH,category)
+        training_data = []
+        if(MODE == "DATA"):
+            ##for DATASET
+            path = os.path.join(DATASET_PATH,category)
+        else:
+            ##for TESTSET
+            path = os.path.join(TESTSET_PATH,category)
         class_num = CATEGORIES.index(category)
-    #directory_in_str = "D:/thesis/trend_rmd/model"
-    #directory_in_str = "F:/Workspace/Thesis/trend_rmd/model"
-    #directory = os.fsencode(DATASET_PATH)
+        #directory_in_str = "D:/thesis/trend_rmd/model"
+        #directory_in_str = "F:/Workspace/Thesis/trend_rmd/model"
+        #directory = os.fsencode(DATASET_PATH)
         checkpoint = open(path+"/cp_filtered.text",mode="w+")
         all_counts = Counter()
         files = os.listdir(path)
-        '''
-        try:
-            #files.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
-            files.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
-        except:
-            files.remove("cp.text")
-            files.remove("cp_filtered.text")
-            files.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
-        '''
-        n_word = 30 #######################
+        if(MODE =="DATA"):
+            try:
+                #files.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
+                files.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
+            except:
+                files.remove("cp.text")
+                files.remove("cp_filtered.text")
+                files.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
+
+        num_word = 100 #
+        n_word = num_word #######################
         c_word = n_word
+        fail_count=0
+        
         for file in files:
             filename = os.fsdecode(file)
-            
+
             if filename.endswith(".txt"):
                 #text = docx2txt.process(directory_in_str+ filename)
                 #doc = docx.Document( filename)
@@ -76,95 +83,115 @@ def create_training_data():
                 print(path+"/"+filename,end=" ")
                 #print(result)
                 
-                count = Counter(result)
-                counts = words_filter(count) #filtered
-
+                counts = Counter(result)
+                counts = words_filter(counts,2) #Filtering start here !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                
                 all_counts = counts + all_counts
                 print(len(counts) ,end=" ")
+                ##HERE Pure augment
+                
                 if(len(counts)>=32):
-                    
                     print("success")
-                    most = counts.most_common(24)
-                    m=[]
-                    for i in most : m.append(i[0])
-                    #words most
-                    for i in m: del(counts[i])
-                    #print(len(m))
-                    #print(m)
-                    #lowest = list(counts.most_common()[:-17:-1])
-                    #lw = []
-                    #for i in lowest: lw.append(i[0])
-                    ##words lowerest
-                    #for i in lw: del(counts[i]) 
-                    ##print(len(lw))
-                    ##print(lw)
-                    randoming = random.choices(list(counts),k=8) 
-                    #random words
-                    rd =[]
-                    for i in randoming: rd.append(i)
+                    most32 = counts.most_common(32)
+                    m32=[]
+                    for i in most32 : m32.append(i[0])
+                    #32 words most
+                    for i in m32: del(counts[i])
+                    #print(len(m32))
+                    #print(m32)
+                    #lowest16 = list(counts.most_common()[:-17:-1])
+                    #lw16 = []
+                    #for i in lowest16: lw16.append(i[0])
+                    ##16 words lowerest
+                    #for i in lw16: del(counts[i]) 
+                    ##print(len(lw16))
+                    ##print(lw16)
+                    #random16 = random.choices(list(counts),k=16) 
+                    #16 random words
+                    #rd16 =[]
+                    #for i in random16: rd16.append(i)
                     #print(len(rd16))
                     #print(rd16)
                     sentence=[]
-                    sentence.extend(m)
-                    #sentence.extend(lw)
-                    sentence.extend(rd)
+                    sentence.extend(m32)
+                    #sentence.extend(lw16)
+                    #sentence.extend(rd16)
                     new_array = v2c.t2v(sentence)
+                    #array = np.append(np.ndarray(shape=(0,0)) ,new_array)
                     training_data.append([new_array, class_num])
-
+                    newpath = f'{path}_preprocessed_fill_mixing/' # Need to set up !!!!!!!!!!!!!!!!!
+                    if not os.path.exists(newpath):
+                        os.makedirs(newpath)
+                    new_file = open(newpath+str(num_word - c_word +1)+".txt",mode="w+")
+                    for i in sentence:
+                        new_file.write(str(i)+"\n")
                     #print(training_data)
                     c_word = c_word-1
+                    fail_count=0
                 else :
                     count_fail[cate] = count_fail[cate]+1
+                    fail_count=fail_count+1
                     print("fail")
                 text.close()
-
+                
             n_word = n_word-1
-            if(n_word==0):
+            
+            if(n_word==0 or fail_count==10):
                 break
-
-        
-
+            
         checkpoint.write(str(len(all_counts.most_common()))+" "+str(len(all_counts.most_common()))+"\n")
         for i in all_counts.most_common():
             txt , count = i
             checkpoint.write(txt+" "+str(count)+"\n")
         
+        #Augmentation start here !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         while(c_word>0):
             sentence=[]
             words = all_counts.most_common()
-            rand = random.sample(words,k=32)
+            #rand = random.sample(words,k=32)
+            rand = WeightedSelectionWithoutReplacement(len(all_counts.most_common()),words,n=32)
             for i in rand:
-                txt , count = i
+                count , txt = i
                 sentence.append(txt)
             new_array = v2c.t2v(sentence)
+            #array = np.append(np.ndarray(shape=(0,0)) ,new_array)
             training_data.append([new_array, class_num])
+            #pure augment
+            
+            #new_file = open(newpath+str(num_word - c_word +1)+".txt",mode="w+")
+            #for i in sentence:
+            #    new_file.write(str(i)+"\n")
+            
             c_word=c_word-1
-            print(c_word)
-
+            print(category,c_word)
+        
         checkpoint.close()
         all_counts.clear()
-        
         #here
         cate = cate + 1
+
+        X=[]
+        y=[]
+        for features,label in training_data:
+            X.append(features)
+            y.append(label)
+
+        X = np.array(X).reshape(-1, 400, 32, 1)
+
+        pickle_out = open("x_test8_32_1000_fil_augment."+str(cate)+".pickle","wb") #pickle x
+        pickle.dump(X, pickle_out)
+        pickle_out.close()
+
+        pickle_out = open("y_test8_32_1000_fil_augment."+str(cate)+".pickle","wb") #pickle y
+        pickle.dump(y, pickle_out)
+        pickle_out.close()
+
     print(count_fail)
-    
+
+def WeightedSelectionWithoutReplacement(len_allcounts,l, n):
+    """Selects without replacement n random elements from a list of (weight, item) tuples."""
+    l = sorted((random.random() * (x[1]/len_allcounts), x[0]) for x in l)
+    return l[-n:] 
+
 create_training_data()
-
-X=[]
-y=[]
-for features,label in training_data:
-    X.append(features)
-    y.append(label)
-
-X = np.array(X).reshape(-1, 32, 400, 1)
-
-pickle_out = open("x_test5_32.pickle","wb")
-pickle.dump(X, pickle_out)
-pickle_out.close()
-
-pickle_out = open("y_test5_32.pickle","wb")
-pickle.dump(y, pickle_out)
-pickle_out.close()
-
-
-

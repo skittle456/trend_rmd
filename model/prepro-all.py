@@ -15,9 +15,10 @@ import pickle
 import string
 
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset5/'
-CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ภาพยนตร์"]
-#CATEGORIES = ["พืช"]
+DATASET_PATH = f'{MODEL_PATH}dataset_thai_8/'
+TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
+#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
+CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
 training_data = []
 
 def create_training_data():
