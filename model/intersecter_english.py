@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from collections import Counter
 import os
-MODEL_PATH='../model/'
+MODEL_PATH='model/'
 #DATASET_PATH = f'{MODEL_PATH}dataset5/'
 #TESTSET_PATH = f'{MODEL_PATH}testset5/'
 #CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ภาพยนตร์"]

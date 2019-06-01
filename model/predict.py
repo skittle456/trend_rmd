@@ -17,10 +17,10 @@ import random
 import numpy as np
 import pickle
 import string
-from intersecter_english import intersecter
-from words_filter import words_filter
+from model.intersecter_english import intersecter
+from model.words_filter import words_filter
 
-MODEL_PATH='../model/'
+MODEL_PATH='model/'
 DATASET_PATH = f'{MODEL_PATH}dataset_eng9/'
 TESTSET_PATH = f'{MODEL_PATH}testset_eng9/'
 CATEGORIES = ["business","entertainment","food","health","music","plant","politics","sport","tech"]
@@ -29,10 +29,10 @@ path = os.path.join(DATASET_PATH,"tech/")
 import numpy as np
 import tensorflow as tf
 
-from model64_english import cnn_model_fn
+from model.model64_english import cnn_model_fn
 
 tf.logging.set_verbosity(tf.logging.INFO)
-model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
+model = gensim.models.KeyedVectors.load_word2vec_format('model/GoogleNews-vectors-negative300.bin', binary=True)
 
 def predict(input_string):
     fullText=""
@@ -72,12 +72,13 @@ def predict(input_string):
             )
         # Create the Estimator
         tag_classifier = tf.estimator.Estimator(
-            model_fn=cnn_model_fn, model_dir="saved")
+            model_fn=cnn_model_fn, model_dir="model/saved")
 
-        predictions = list(tag_classifier.predict(input_fn=eval_input_fn,predict_keys="probabilities"))
+        predictions = list(tag_classifier.predict(input_fn=eval_input_fn))
         for i in predictions:
             predicted=(i["probabilities"])*100
-        return predicted
+            predicted_classes=i["classes"]
+        return predicted,predicted_classes
     else :
         print("fail")
 

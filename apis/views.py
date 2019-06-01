@@ -614,7 +614,10 @@ class TrendingList(APIView):
 def load_editor(request):
     if request.method == 'POST':
         for key in request.FILES:
-            predict(request.FILE[key])
+            arry,predicted_class = predict(request.FILES[key])
+            for i in arry:
+                print('{:.3f}'.format(i)+"%")
+            print(predicted_class)
     return render(request,'editor.html')
 
 def toFile(request, string):
