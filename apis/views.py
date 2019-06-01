@@ -618,6 +618,7 @@ def load_editor(request):
             for i in arry:
                 print('{:.3f}'.format(i)+"%")
             print(predicted_class)
+            return render(request, 'output.html', arry)
     return render(request,'editor.html')
 
 def toFile(request, string):
@@ -627,3 +628,10 @@ def toFile(request, string):
         f.write(str(string))
         f.close()
         return filename
+
+
+#import pycron
+#gt = GTrend()
+#if pycron.is_now('0 */8 * * *'):
+#    lst = gt.core(geo='US')
+    
