@@ -14,7 +14,9 @@ from apis.models import *
 from django.db.models import Q
 import os
 from datetime import datetime
-from rest_framework.decorators import api_view
+from model.predict import *
+#from rest_framework.decorators import api_view
+
 #from django.db.models.functions import Length
 #a = Article.objects.all().order_by(Length('text').desc())
 # Create your views here.
@@ -608,12 +610,11 @@ class TrendingList(APIView):
 
 #             #print("title: "+title, 'category: ', *categories, sep=' ,')
 #         return articles
-@api_view(['GET','POST'])
+#@api_view(['GET','POST'])
 def load_editor(request):
     if request.method == 'POST':
         for key in request.FILES:
-            print(key)
-            print(request.FILES[key])
+            predict(request.FILE[key])
     return render(request,'editor.html')
 
 def toFile(request, string):
