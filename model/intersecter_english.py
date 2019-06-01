@@ -2,10 +2,12 @@
 from collections import Counter
 import os
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset_thai_8/'
-TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
-#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
-CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
+#DATASET_PATH = f'{MODEL_PATH}dataset5/'
+#TESTSET_PATH = f'{MODEL_PATH}testset5/'
+#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ภาพยนตร์"]
+DATASET_PATH = f'{MODEL_PATH}dataset_eng9/'
+TESTSET_PATH = f'{MODEL_PATH}testset_eng9/'
+CATEGORIES = ["business","entertainment","food","health","music","plant","politics","sport","tech"]
 intsect=[]
 
 def intersecter():

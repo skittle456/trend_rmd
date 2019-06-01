@@ -5,26 +5,25 @@ import codecs
 import os
 import io
 import re
-import v2c
-from pythainlp.tokenize import word_tokenize
-from pythainlp.summarize import summarize_text
+from nltk.tokenize import sent_tokenize, word_tokenize
+import gensim
 from collections import Counter
 import random
 import numpy as np
 import pickle
 import string
-from intersecter import intersecter
+from intersecter_english import intersecter
 from words_filter import words_filter
 
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset_thai_8/'
-TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
-#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
-CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
-
+DATASET_PATH = f'{MODEL_PATH}dataset_eng9/'
+TESTSET_PATH = f'{MODEL_PATH}testset_eng9/'
+CATEGORIES = ["business","entertainment","food","health","music","plant","politics","sport","tech"]
+#CATEGORIES = ["กีฬา","ศาสนา"]
+model = gensim.models.KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 MODE = "TEST"
+
 def create_training_data():
-    
     count_fail = [0]*10
     cate=0
     intersecter()
@@ -54,7 +53,7 @@ def create_training_data():
 
         num_word = 100 #
         n_word = num_word #######################
-        c_word = n_word
+        c_word = 100
         fail_count=0
         
         for file in files:
@@ -78,52 +77,37 @@ def create_training_data():
                     fullText = str(fullText)+ str(line.decode("utf-8"))
                 #print(fullText)
                 #clean_text=re.sub("[A-Za-z0123456789!\#\$%\&'\*\+\-\.\^_`\|\~:\(\)\,\\\ ]+",'',fullText)
-                clean_text=re.sub("[^ก-๙]+",'',fullText)
-                result=word_tokenize(clean_text,engine='newmm')
+                clean_text=re.sub("[^A-z ]+",'',fullText)
+                result=word_tokenize(clean_text)
+                result= [x.lower() for x in result]
                 print(path+"/"+filename,end=" ")
                 #print(result)
                 
                 counts = Counter(result)
-                counts = words_filter(counts,2) #Filtering start here !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                
+                counts = words_filter(counts) #Filtering start here !!!!!!!!!!!!!!!!!!!!!!!!!!!
                 all_counts = counts + all_counts
-                print(len(counts) ,end=" ")
-                ##HERE Pure augment
                 
-                if(len(counts)>=32):
+                ##HERE Pure augment
+                words=counts.most_common()
+                lst=[]
+                for i in words : lst.append(i[0])
+                words = list(filter(lambda x: x in model.vocab, lst))
+                print(len(words) ,end=" ")
+                
+                if(len(words)>=64):
                     print("success")
-                    most32 = counts.most_common(32)
-                    m32=[]
-                    for i in most32 : m32.append(i[0])
-                    #32 words most
-                    for i in m32: del(counts[i])
-                    #print(len(m32))
-                    #print(m32)
-                    #lowest16 = list(counts.most_common()[:-17:-1])
-                    #lw16 = []
-                    #for i in lowest16: lw16.append(i[0])
-                    ##16 words lowerest
-                    #for i in lw16: del(counts[i]) 
-                    ##print(len(lw16))
-                    ##print(lw16)
-                    #random16 = random.choices(list(counts),k=16) 
-                    #16 random words
-                    #rd16 =[]
-                    #for i in random16: rd16.append(i)
-                    #print(len(rd16))
-                    #print(rd16)
-                    sentence=[]
-                    sentence.extend(m32)
-                    #sentence.extend(lw16)
-                    #sentence.extend(rd16)
-                    new_array = v2c.t2v(sentence)
+                    most64 = words[:64]
+                    m64=[]
+                    for word in most64:
+                        m64.append( model[word])
+                    training_data.append([m64, class_num])
                     #array = np.append(np.ndarray(shape=(0,0)) ,new_array)
-                    training_data.append([new_array, class_num])
-                    newpath = f'{path}_preprocessed_fill_mixing/' # Need to set up !!!!!!!!!!!!!!!!!
+                    
+                    newpath = f'{path}_english_prepro/' # Need to set up !!!!!!!!!!!!!!!!!
                     if not os.path.exists(newpath):
                         os.makedirs(newpath)
                     new_file = open(newpath+str(num_word - c_word +1)+".txt",mode="w+")
-                    for i in sentence:
+                    for i in most64:
                         new_file.write(str(i)+"\n")
                     #print(training_data)
                     c_word = c_word-1
@@ -132,13 +116,14 @@ def create_training_data():
                     count_fail[cate] = count_fail[cate]+1
                     fail_count=fail_count+1
                     print("fail")
+                
                 text.close()
                 
             n_word = n_word-1
             
-            if(n_word==0 or fail_count==10):
+            if(n_word==0 or fail_count==None):
                 break
-            
+           
         checkpoint.write(str(len(all_counts.most_common()))+" "+str(len(all_counts.most_common()))+"\n")
         for i in all_counts.most_common():
             txt , count = i
@@ -146,17 +131,24 @@ def create_training_data():
         
         #Augmentation start here !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
-        while(c_word>0):
+        while(c_word>0 ):
+            
             sentence=[]
             words = all_counts.most_common()
-            #rand = random.sample(words,k=32)
-            rand = WeightedSelectionWithoutReplacement(len(all_counts.most_common()),words,n=32)
-            for i in rand:
-                count , txt = i
-                sentence.append(txt)
-            new_array = v2c.t2v(sentence)
-            #array = np.append(np.ndarray(shape=(0,0)) ,new_array)
-            training_data.append([new_array, class_num])
+            #rand = random.sample(words,k=64)
+            while True:
+                rand = WeightedSelectionWithoutReplacement(len(all_counts.most_common()),words,n=100)
+                lst=[]
+                for i in rand : lst.append(i[1])
+                lst = list(filter(lambda x: x in model.vocab, lst))
+                if(len(lst)>=64):
+                    break
+            most64=[]
+            for i in lst:
+                most64.append(model[i])
+                if(len(most64)==64): break
+            training_data.append([most64, class_num])
+
             #pure augment
             
             #new_file = open(newpath+str(num_word - c_word +1)+".txt",mode="w+")
@@ -165,6 +157,7 @@ def create_training_data():
             
             c_word=c_word-1
             print(category,c_word)
+            
         
         checkpoint.close()
         all_counts.clear()
@@ -177,13 +170,13 @@ def create_training_data():
             X.append(features)
             y.append(label)
 
-        X = np.array(X).reshape(-1, 400, 32, 1)
+        X = np.array(X).reshape(-1, 300, 64, 1)
 
-        pickle_out = open("x_test8_32_1000_fil_augment."+str(cate)+".pickle","wb") #pickle x
+        pickle_out = open("x_test9eng_fil_mix."+str(cate)+".pickle","wb") #pickle x
         pickle.dump(X, pickle_out)
         pickle_out.close()
 
-        pickle_out = open("y_test8_32_1000_fil_augment."+str(cate)+".pickle","wb") #pickle y
+        pickle_out = open("y_test9eng_fil_mix."+str(cate)+".pickle","wb") #pickle y
         pickle.dump(y, pickle_out)
         pickle_out.close()
 

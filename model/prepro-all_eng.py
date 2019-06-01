@@ -6,8 +6,7 @@ import os
 import io
 import re
 import v2c
-from pythainlp.tokenize import word_tokenize
-from pythainlp.summarize import summarize_text
+from nltk.tokenize import sent_tokenize, word_tokenize
 from collections import Counter
 import random
 import numpy as np
@@ -15,10 +14,10 @@ import pickle
 import string
 
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset_thai_8/'
-TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
-#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
-CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
+DATASET_PATH = f'{MODEL_PATH}dataset_eng9/'
+TESTSET_PATH = f'{MODEL_PATH}testset_eng9/'
+CATEGORIES = ["business","entertainment","food","health","music","plant","politics","sport","tech"]
+#CATEGORIES = ["พืช"]
 training_data = []
 
 def create_training_data():
@@ -50,8 +49,9 @@ def create_training_data():
                     fullText = str(fullText)+ str(line.decode("utf-8"))
                 #print(fullText)
                 #clean_text=re.sub("[A-Za-z0123456789!\#\$%\&'\*\+\-\.\^_`\|\~:\(\)\,\\\ ]+",'',fullText)
-                clean_text=re.sub("[^ก-๙]+",'',fullText)
-                result=word_tokenize(clean_text,engine='newmm')
+                clean_text=re.sub("[^A-z ]+",'',fullText)
+                result=word_tokenize(clean_text)
+                result= [x.lower() for x in result]
                 print(path+"/"+filename)
                 #print(result)
                 

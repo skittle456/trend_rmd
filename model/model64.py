@@ -64,6 +64,7 @@ def cnn_model_fn(features, labels, mode):
       activation=tf.nn.relu)
 
   pool3 = tf.layers.max_pooling1d(inputs=conv3, pool_size=2, strides=2)
+  print(pool3)
   # Flatten tensor into a batch of vectors
   # Input Tensor Shape: [batch_size, 16, 100, 64]
   # Output Tensor Shape: [batch_size, 16 * 100 * 64]
@@ -82,7 +83,7 @@ def cnn_model_fn(features, labels, mode):
   # Input Tensor Shape: [batch_size, 256]
   # Output Tensor Shape: [batch_size, 10]
   dense2 = tf.layers.dense(inputs=dropout1, units=100, activation=tf.nn.relu)
-  logits1 = tf.layers.dense(inputs=dense2, units=10)
+  logits1 = tf.layers.dense(inputs=dense2, units=2)
 
   print(logits1)
   predictions = {

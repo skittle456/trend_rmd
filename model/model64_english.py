@@ -11,7 +11,7 @@ def cnn_model_fn(features, labels, mode):
   # Input Layer
   # Reshape X to 4-D tensor: [batch_size, row, colum, channels]
   # MNIST images are 28x28 pixels, and have one color channel
-  input_layer = tf.reshape(features["x"], [-1, 32 , 400])
+  input_layer = tf.reshape(features["x"], [-1, 64 , 300])
   print(input_layer)
   
   #25600
@@ -22,7 +22,7 @@ def cnn_model_fn(features, labels, mode):
   # Output Tensor Shape: [batch_size, 64, 400, 32]
   conv1 = tf.layers.conv1d(
       inputs=input_layer,
-      filters=200,
+      filters=150,
       kernel_size=4,
       padding="same",
       activation=tf.nn.relu)
@@ -42,7 +42,7 @@ def cnn_model_fn(features, labels, mode):
   # Output Tensor Shape: [batch_size, 32, 200, 64]
   conv2 = tf.layers.conv1d(
       inputs=pool1,
-      filters=100,
+      filters=75,
       kernel_size=4,
       padding="same",
       activation=tf.nn.relu)
@@ -67,13 +67,13 @@ def cnn_model_fn(features, labels, mode):
   # Flatten tensor into a batch of vectors
   # Input Tensor Shape: [batch_size, 16, 100, 64]
   # Output Tensor Shape: [batch_size, 16 * 100 * 64]
-  pool3_flat = tf.reshape(pool3, [-1, 4 * 25])
+  pool3_flat = tf.reshape(pool3, [-1, 8 * 25])
   print(pool3_flat)
   # Dense Layer
   # Densely connected layer with 256 neurons
   # Input Tensor Shape: [batch_size, 16 * 100 * 64]
   # Output Tensor Shape: [batch_size, 256]
-  dense = tf.layers.dense(inputs=pool3_flat, units=100, activation=tf.nn.relu)
+  dense = tf.layers.dense(inputs=pool3_flat, units=200, activation=tf.nn.relu)
 
   # Add dropout operation; 0.6 probability that element will be kept
   dropout1 = tf.layers.dropout( inputs=dense, rate=0.5, training=mode == tf.estimator.ModeKeys.TRAIN)
@@ -82,7 +82,7 @@ def cnn_model_fn(features, labels, mode):
   # Input Tensor Shape: [batch_size, 256]
   # Output Tensor Shape: [batch_size, 10]
   dense2 = tf.layers.dense(inputs=dropout1, units=100, activation=tf.nn.relu)
-  logits1 = tf.layers.dense(inputs=dense2, units=2)
+  logits1 = tf.layers.dense(inputs=dense2, units=9)
 
   print(logits1)
   predictions = {

@@ -17,10 +17,10 @@ from intersecter import intersecter
 from words_filter import words_filter
 
 MODEL_PATH='../model/'
-DATASET_PATH = f'{MODEL_PATH}dataset5/'
-TESTSET_PATH = f'{MODEL_PATH}testset5/'
-CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
-#CATEGORIES = ["กีฬา","ศาสนา"]
+DATASET_PATH = f'{MODEL_PATH}dataset_thai_8/'
+TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
+#CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
+CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
 
 MODE = "DATA"
 
@@ -53,10 +53,11 @@ def create_training_data():
                 files.remove("cp_filtered.text")
                 files.sort( key=lambda x: int(''.join(filter(str.isdigit, x))))
 
-        num_word = 100
+        num_word = 100 #
         n_word = num_word #######################
-        c_word = n_word
+        c_word = 1000
         fail_count=0
+        
         for file in files:
             filename = os.fsdecode(file)
 
@@ -84,10 +85,12 @@ def create_training_data():
                 #print(result)
                 
                 counts = Counter(result)
-                counts = words_filter(counts) #filtered
+                counts = words_filter(counts,2) #Filtering start here !!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 
                 all_counts = counts + all_counts
                 print(len(counts) ,end=" ")
+                ##HERE Pure augment
+                
                 if(len(counts)>=64):
                     print("success")
                     most32 = counts.most_common(64)
@@ -117,7 +120,7 @@ def create_training_data():
                     new_array = v2c.t2v(sentence)
                     #array = np.append(np.ndarray(shape=(0,0)) ,new_array)
                     training_data.append([new_array, class_num])
-                    newpath = f'{path}_preprocessed_unfil/' 
+                    newpath = f'{path}_preprocessed_fill_mixing/' # Need to set up !!!!!!!!!!!!!!!!!
                     if not os.path.exists(newpath):
                         os.makedirs(newpath)
                     new_file = open(newpath+str(num_word - c_word +1)+".txt",mode="w+")
@@ -131,6 +134,7 @@ def create_training_data():
                     fail_count=fail_count+1
                     print("fail")
                 text.close()
+                
             n_word = n_word-1
             
             if(n_word==0 or fail_count==10):
@@ -140,6 +144,8 @@ def create_training_data():
         for i in all_counts.most_common():
             txt , count = i
             checkpoint.write(txt+" "+str(count)+"\n")
+        
+        #Augmentation start here !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
         while(c_word>0):
             sentence=[]
@@ -152,9 +158,12 @@ def create_training_data():
             new_array = v2c.t2v(sentence)
             #array = np.append(np.ndarray(shape=(0,0)) ,new_array)
             training_data.append([new_array, class_num])
-            new_file = open(newpath+str(num_word - c_word +1)+".txt",mode="w+")
-            for i in sentence:
-                new_file.write(str(i)+"\n")
+            #pure augment
+            
+            #new_file = open(newpath+str(num_word - c_word +1)+".txt",mode="w+")
+            #for i in sentence:
+            #    new_file.write(str(i)+"\n")
+            
             c_word=c_word-1
             print(category,c_word)
         
@@ -171,11 +180,11 @@ def create_training_data():
 
         X = np.array(X).reshape(-1, 400, 64, 1)
 
-        pickle_out = open("x_data5_100."+str(cate)+".pickle","wb")
+        pickle_out = open("x_test8_1000_fil_augment."+str(cate)+".pickle","wb") #pickle x
         pickle.dump(X, pickle_out)
         pickle_out.close()
 
-        pickle_out = open("y_data5_100."+str(cate)+".pickle","wb")
+        pickle_out = open("y_test8_1000_fil_augment."+str(cate)+".pickle","wb") #pickle y
         pickle.dump(y, pickle_out)
         pickle_out.close()
 
