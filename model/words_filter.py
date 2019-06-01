@@ -8,7 +8,7 @@ TESTSET_PATH = f'{MODEL_PATH}testset_thai_8/'
 #CATEGORIES = ["การเมือง","การศึกษา","กีฬา","ดนตรี","พืช","ภาษา","สถานที่","สัตว์","อาหาร","ศาสนา"]
 CATEGORIES = ["กีฬา","บุคคลสำคัญ"]
 '''
-MODEL_PATH='../model/'
+MODEL_PATH='model/'
 DATASET_PATH = f'{MODEL_PATH}dataset_eng9/'
 TESTSET_PATH = f'{MODEL_PATH}testset_eng9/'
 CATEGORIES = ["business","entertainment","food","health","music","plant","politics","sport","tech"]

@@ -14,7 +14,7 @@ from apis.models import *
 from django.db.models import Q
 import os
 from datetime import datetime
-#from model.predict import *
+from model.predict import *
 #from rest_framework.decorators import api_view
 
 #from django.db.models.functions import Length
@@ -610,19 +610,14 @@ class TrendingList(APIView):
 
 #             #print("title: "+title, 'category: ', *categories, sep=' ,')
 #         return articles
-def find_max(self, lst, n=9):
-        output = [0]*n
-        for i in lst:
-            output = [a+b for a, b in zip(output, i)]
-        sorted(output)[:3:-1]
-        return output
-
 #@api_view(['GET','POST'])
 def load_editor(request):
     if request.method == 'POST':
         for key in request.FILES:
-            #predict(request.FILE[key])
-            print()
+            arry,predicted_class = predict(request.FILES[key])
+            for i in arry:
+                print('{:.3f}'.format(i)+"%")
+            print(predicted_class)
     return render(request,'editor.html')
 
 def toFile(request, string):
@@ -632,9 +627,3 @@ def toFile(request, string):
         f.write(str(string))
         f.close()
         return filename
-
-#import pycron
-#gt = GTrend()
-#if pycron.is_now('0 */8 * * *'):
-#    lst = gt.core(geo='US')
-    
