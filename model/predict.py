@@ -25,8 +25,6 @@ DATASET_PATH = f'{MODEL_PATH}dataset_eng9/'
 TESTSET_PATH = f'{MODEL_PATH}testset_eng9/'
 CATEGORIES = ["business","entertainment","food","health","music","plant","politics","sport","tech"]
 path = os.path.join(DATASET_PATH,"tech/")
-text=open(path+"1.txt","r")
-
 
 import numpy as np
 import tensorflow as tf
@@ -83,6 +81,3 @@ def predict(input_string):
     else :
         print("fail")
 
-
-
-print(predict(text))
