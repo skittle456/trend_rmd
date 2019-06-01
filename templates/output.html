@@ -4,16 +4,23 @@
 {% block css %}
     <link rel="stylesheet" type="text/css" href="{% static "/css/output.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "/css/index.css" %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
 {% endblock %}
 {% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
 {% endblock %}
 {% block content %}
 <div class="container">
     <h5> Output </h5>
     <hr>
     <canvas id="output-chart" width="400" height="400"></canvas>
-    {% for item in top3 %}
-    {%  %}
+    <hr>
+    <h5 class='mt-1'> Current Trend: </h5>
+    <ol>
+    {% for item in arry %}
+    <li> {{ item }} </li>
+    </ol>
+    
 </div>
 {% endblock %}
 </body>
