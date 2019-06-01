@@ -1,0 +1,306 @@
+
+@font-face {
+    font-family: Cloud-Light;
+    src: url('/static/fonts/Cloud-LightBold/Cloud-Light.otf') format("woff"), url("'/static/fonts/Cloud-LightBold/Cloud-Light.otf'")  format("truetype");
+}
+@font-face {
+    font-family: Cloud-Bold;
+    src: url('/static/fonts/Cloud-LightBold/Cloud-Bold.otf') format("woff"), url("'/static/fonts/Cloud-LightBold/Cloud-Bold.otf'")  format("truetype");
+}
+body {
+    font-family: Cloud-Light,'Mitr';
+    margin-left:0px;
+    padding-top:76px;
+    z-index:1;
+}
+footer#footer {
+    margin-top: 60px;
+    padding: 2.5rem 0;
+    color: #999;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-top: .05rem solid #e5e5e5;
+}
+#register-modal input[type="text"], #register-modal input[type="password"], #register-modal input[type="email"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid lightgrey;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+.navbar-expand-custom {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+.navbar-expand-custom .navbar-nav {
+    flex-direction: row;
+}
+.navbar-expand-custom .navbar-nav .nav-link {
+    padding-right: .5rem;
+    padding-left: .5rem;
+}
+.navbar-expand-custom .navbar-collapse {
+    display: flex!important;
+}
+.navbar-expand-custom .navbar-toggler {
+    display: none;
+}
+.navbar-brand{
+    width:53.69px;
+    height:53.69px;
+}
+.brand {
+    width:53.69px;
+    height:53.69px;
+    /* margin-left:20px;
+    margin-right:20px;
+    margin-top:20px; */
+}
+span.text-logo {
+    position: absolute;
+    top: 11.85px;
+    font-size: 26px;
+    font-family: Cloud-Bold;
+    margin-left: 4.8px;
+}
+a.btn.btn-md, a.btn, button.btn.btn-md, button.btn {
+    background: #f9a11d;
+    color:#ffff;
+    border-radius: 24px;
+}
+span.subtext-logo {
+    position: absolute;
+    top: 45px;
+    font-size: 14px;
+    color: #999999;
+    margin-left: 5.4px;
+}
+.mainbar {
+    background-color: #fcfcfc;
+    z-index:2000;
+    position:fixed;
+    /* overflow:visible; */
+    transition: top 0.8 ease-in-out;
+    top: 0;
+    width: 100%;
+    min-height:73px;
+}
+.nav-up {
+    top: -73px;
+}
+li.nav-item {
+    padding: 6px;
+  }
+
+input.searchbar {
+    font-family: Cloud-Light, FontAwesome !important; 
+    width: 130px;
+    height: 31.837px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    /* border-radius: 24px; */
+    /* background-color: #E5E5E4; */
+    border:none;
+    background-color: transparent;
+}
+
+input.searchbar:focus {
+    width: 381.643px;
+}
+@media(max-width: 690px) {
+    body{
+        padding-top: 0px;
+    }
+
+    .navbar-toggler {
+        position: absolute;
+        right: 10px;
+    }
+
+    span.text-logo {
+        position: absolute;
+        font-size: 19px;
+    }
+    span.subtext-logo {
+        position: absolute;
+        font-size: 9.7px;
+        color: #999999;
+        top: 36px;
+    }
+    div.search-item {
+        position: absolute;
+        /* left: 180px; */
+        left: 15px;
+        /* top: 20px; */
+        top: 30px;
+    }
+    input.searchbar {
+        font-family: Cloud-Light, FontAwesome !important;
+        /* font-size: 11px;  */
+        /* width: 39.51px; */
+        /* width: 210px; */
+        /* height: 22.12px;
+        -webkit-transition: width 0.4s ease-in-out;
+        transition: width 0.4s ease-in-out;
+        border-radius: 24px;
+        background-color: transparent;
+        border: none; */
+        width: 100vw;
+        font-size: 14px;
+        border:none;
+        border-bottom: 1px solid lightgrey;
+        background-color: transparent;
+        height: 100%;
+        border-radius: 0px;
+    }
+    input.searchbar:focus {
+        width: 100vw;
+        /* width: 146px; */
+        /* width: 142.51px; */
+        /* width: 230px; */
+        /* background-color: #E5E5E4; */
+    }
+}
+
+.moblie-nav {
+    width:250px;
+    height:100%;
+}
+.wrapper {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+}
+
+#sidebar.active {
+    margin-left: -200px;
+}
+
+#sidebar {
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 9999;
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+
+/* errr deaw fixed sus charn */
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: #fcfcfc;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #fcfcfc;
+    color: #FFA300;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+#sidebar ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #fff;
+    background: #6d7fcc;
+}
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+}
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+/* sep 10 2018 */
+
+.btn-side {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+.sm-logo {
+    width:44vw;
+}
+
+.search-btn {
+    background-color:transparent;
+    border-color:transparent;
+    color:grey;
+  }
+
+.bb-bg-lg {
+    border-bottom:1px solid lightgrey;
+}
+
+.tag-bar {
+    margin-top: -1px;
+    overflow-x:hidden;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.tag-fixed {
+    position:fixed;
+    transition: top 0.8 ease-in-out;
+    transition-duration: 0.5s;
+    top: 0.1px;
+    /* top: 40.1px; */
+    width: 100%;
+    height: 70px;
+    z-index: 9000;
+}
+/* .search-fixed */
+.nav-search {
+    position:fixed;
+    transition: top 0.8 ease-in-out;
+    transition-duration: 0.5s;
+    top: 70px;
+    width: 100%;
+    height: 70px;
+    z-index: 9999;
+}
+.nav-brand {
+    margin:10px;
+    margin-right:-4px;
+}
+.blog-tag {
+    cursor:pointer;
+}
+.font-24 {
+    font-size:24px;
+}

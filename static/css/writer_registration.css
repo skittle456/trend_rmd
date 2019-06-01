@@ -1,0 +1,26 @@
+.main-container{
+    margin-top: 40px;
+    text-align: center;
+}
+.register-table-list{
+    margin-top: 20px;
+}
+.table-selector{
+    border-radius: 10px;
+    font-size: 22px;
+    margin: 20px 40px 20px 40px;
+    padding: 10px 0px 10px 0px;
+}
+.table-selector:hover{
+    color: white;
+    background-color: #7386D5;
+}
+.table-selector-selected{
+    background-color: #FFA300;
+}
+.table-selector-selected:hover{
+    background-color: #FFA300;
+}
+.btn-status{
+    border-radius: 10px;
+}

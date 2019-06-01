@@ -1,0 +1,16 @@
+#tag-container {
+    margin-top: 70px;
+}
+#provider-container span.pro_name {
+    font-size: 20px;
+    font-family: Cloud-Bold;
+}
+div.follow-btn {
+    width:72.32;
+    height:35.5px;
+    font-size:18px;
+    font-family: Cloud-Bold;
+}
+div.label, span.label {
+    margin: 5px;
+}

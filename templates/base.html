@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1", shrink-to-fit=no>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha256-Md8eaeo67OiouuXAi8t/Xpd8t2+IaJezATVTWbZqSOw=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css?family=Mitr" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+{% block title %}
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block js %}
+{% endblock %}
+</head>
+<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+<img class="nav-brand" src="{% static "favicon.ico" %}" width="22" height="22">
+  <h5 class="pl-2 my-0 mr-md-auto font-weight-normal">Text Classification using CNNs</h5>
+</div>
+{% block content %}
+{% endblock %}
+</body>
+{% block javascript %}
+{% endblock %}
+</html>
