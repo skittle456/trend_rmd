@@ -15,10 +15,11 @@ class GTrend:
             f = open(file_name, "w")
             f.write(i.content)
             f.close()
-            
+
     def core(self, geo='TH'):
         feed = parse("https://trends.google.com/trends/trendingsearches/daily/rss?geo="+geo)
         trends = GoogleTrend.objects.order_by('-published_on')
+        lst = []
         for entry in feed.entries:
             duplicated = False
             for trend in trends:
@@ -35,6 +36,8 @@ class GTrend:
             gt.published_on = datetime(*entry.published_parsed[:6])
             gt.lang = geo
             gt.save()
+            lst.append(gt)
+        return lst
     def writefile(self, tag_name, gtrend, count, data_type):
         file_name = str(data_type) +'/'+str(tag_name)+'/'+str(count)+'.txt'
         makedirs(path.dirname(file_name), exist_ok=True)
