@@ -618,7 +618,10 @@ def load_editor(request):
             for i in arry:
                 print('{:.3f}'.format(i)+"%")
             print(predicted_class)
-            return render(request, 'output.html', arry)
+            data = {
+                "arry" : arry,
+            }
+            return render(request, 'output.html', data)
     return render(request,'editor.html')
 
 def toFile(request, string):
