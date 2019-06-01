@@ -32,6 +32,10 @@ class Trend(models.Model):
 class GoogleTrend(models.Model):
     trend_id = models.AutoField(max_length=10,primary_key=True)
     title = models.CharField(max_length=255)
+    title_detail = models.CharField(max_length=255,null=True,blank=True)
+    summary = models.CharField(max_length=255,null=True,blank=True)
+    lang = models.CharField(max_length=100, default='TH')
+    description = models.TextField(null=True, blank=True)
     url = models.CharField(max_length=255,null=True,blank=True)
     query = models.CharField(max_length=255,null=True,blank=True)
     approx_traffic = models.CharField(max_length=255,null=True,blank=True)

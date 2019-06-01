@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^trend_list', views.TrendingList.as_view(), name='trending_list'),
+    url(r'^predict', views.load_editor, name='predict'),
 ]

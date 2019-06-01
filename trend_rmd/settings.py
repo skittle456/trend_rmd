@@ -38,7 +38,7 @@ LOGIN_REDIRECT_URL = 'home'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 22428800
 
 # Application definition
 
@@ -165,5 +165,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+#STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 MEDIA_URL = "/media/"
 # MEDIA_ROOT = os.path.join(BASE_DIR,"static/upload")
